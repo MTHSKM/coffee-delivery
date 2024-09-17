@@ -44,6 +44,8 @@ export function CartContextProvider({children}: CartContextProviderProps) {
         setCart([])
     }
 
+    console.log(cart)
+
     return(
         <CartContext.Provider value={{cart, handleAddToCart, handleRemoveFromCart, handleClearCart}}>
             {children}

@@ -7,7 +7,6 @@ import { Minus, Plus, ShoppingCart } from "phosphor-react";
 export function Card() {
     const contextCoffee = useContext(CoffeContext)
     const contextCart = useContext(CartContext)
-    const [coffeQuantity, setCoffeQuantity] = useState(1)
     const [isItemAdded, setIsItemAdded] = useState(false)
 
     if (!contextCoffee || !contextCart) {
@@ -23,16 +22,9 @@ export function Card() {
     function addToCart(coffee: CoffeContextType, quantity: number) {
         handleAddToCart(coffee, quantity)
         setIsItemAdded(true)
-        setCoffeQuantity(1)
     }
 
-    function increaseQuantity() {
-        setCoffeQuantity( state => state + 1)
-    }
 
-    function decreaseQuantity() {
-        setCoffeQuantity( state => state - 1)
-    }
 
     useEffect(() => {
         let timeout: number
@@ -51,9 +43,22 @@ export function Card() {
     }, [isItemAdded])
 
     return (
+
+
         <CardListContainer>
             {filteredCoffees.length > 0 ? (
                 filteredCoffees.map(coffee => {
+
+
+                    const [coffeQuantity, setCoffeQuantity] = useState(1)
+
+                    function increaseQuantity() {
+                        setCoffeQuantity(state => state + 1)
+                    }
+                
+                    function decreaseQuantity() {
+                        setCoffeQuantity(state => state - 1)
+                    }
                     return (
                         <CardContainer key={coffee.id}>
                             <CardImageContainer src={coffee.image} alt={coffee.title}></CardImageContainer>
@@ -85,16 +90,16 @@ export function Card() {
                                         </button>
                                     </ProductOrderInputContainer>
 
-                                    <button disabled={isItemAdded} onClick={() => {addToCart(coffee, coffeQuantity)}}>
+                                    <button disabled={isItemAdded} onClick={() => { addToCart(coffee, coffeQuantity); setCoffeQuantity(1) }}>
                                         {isItemAdded ? (
                                             <ShoppingCart
                                                 size={22}
-                                                color={'#FFFFFF'} 
+                                                color={'#FFFFFF'}
                                                 weight='fill'
                                             />
                                         ) : (
-                                            <ShoppingCart size={22} color={'#FFFFFF'} 
-                                            weight='fill'/>
+                                            <ShoppingCart size={22} color={'#FFFFFF'}
+                                                weight='fill' />
                                         )}
                                     </button>
                                 </ProductOrderContainer>

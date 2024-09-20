@@ -1,14 +1,15 @@
-import { createContext, ReactNode, useState } from "react";
-import { CoffeContextType } from "./CafesContext";
+import { createContext, ReactNode, useEffect, useReducer } from "react"
+import { CoffeeContextType } from "./CafesContext"
+import { cartReducer } from "../reducers/Cart/reducer"
+import { addToCartAction, clearCartAction, removeFromCartAction } from "../reducers/Cart/actions"
 
-
-interface CartItem extends CoffeContextType {
+export interface CartItem extends CoffeeContextType {
     quantity: number
 }
 
 interface CartContextType {
     cart: CartItem[]
-    handleAddToCart: (coffee: CoffeContextType, quantity: number) => void
+    handleAddToCart: (coffee: CoffeeContextType, quantity: number) => void
     handleRemoveFromCart: (id: string) => void
     handleClearCart: () => void
 }
@@ -19,35 +20,37 @@ interface CartContextProviderProps {
 
 export const CartContext = createContext<CartContextType | null>(null)
 
-export function CartContextProvider({children}: CartContextProviderProps) {
-    const [cart, setCart] = useState<CartItem[]>([])
+const initialState: CartItem[] = []
 
-    function handleAddToCart(coffee: CoffeContextType, quantity: number) {
-        setCart((state) => {
-            const alreadyExistCart = state.findIndex(item => item.id === coffee.id)
+export function CartContextProvider({ children }: CartContextProviderProps) {
+    const [cartState, dispatch] = useReducer(cartReducer, initialState, () => {
+        const storedStateAsJSON = localStorage.getItem('@coffee-delivery:cart-state-1.0.0')
 
-            if(alreadyExistCart > -1) {
-                const updateCart = [...state]
-                updateCart[alreadyExistCart].quantity += quantity
-                return updateCart
-            } else {
-                return [...state, {...coffee, quantity}]
-            }
-        })
+        if(storedStateAsJSON) {
+            return JSON.parse(storedStateAsJSON)
+        }
+    })
+    
+    useEffect(() => {
+        const stateJSON = JSON.stringify(cartState)
+
+        localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON)
+    }, [cartState])
+
+    function handleAddToCart(coffee: CoffeeContextType, quantity: number) {
+        dispatch(addToCartAction(coffee, quantity))
     }
 
     function handleRemoveFromCart(id: string) {
-        setCart((state) => state.filter(item => item.id !== id))
+        dispatch(removeFromCartAction(id))
     }
 
     function handleClearCart() {
-        setCart([])
+        dispatch(clearCartAction())
     }
 
-    console.log(cart)
-
-    return(
-        <CartContext.Provider value={{cart, handleAddToCart, handleRemoveFromCart, handleClearCart}}>
+    return (
+        <CartContext.Provider value={{ cart: cartState, handleAddToCart, handleRemoveFromCart, handleClearCart }}>
             {children}
         </CartContext.Provider>
     )

@@ -40,7 +40,6 @@ export function Banner() {
                 </BannerIconsContainer>
 
             </BannerLeftContainer>
-
             <img src={bannerImage}></img>
         </BannerContainer>
     )

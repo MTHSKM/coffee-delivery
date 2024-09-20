@@ -16,14 +16,15 @@ export const CardContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   text-align: center;
 `
 
 export const CardImageContainer = styled.img`
   margin-top: -1.25rem;
-  max-width: 7.5rem;
-  max-height: 7.5rem;
+  width: 7.5rem;
+  height: 7.5rem;
   align-self: center;
 `
 

@@ -30,6 +30,11 @@ export const CatalogOptionsContainer = styled.div`
             border-bottom: 2px solid ${props => props.theme['yellow']};
             color: ${props => props.theme['yellow']};
         }
+
+        &[data-state='true'] {
+            border-bottom: 2px solid ${props => props.theme['yellow']};
+            color: ${props => props.theme['yellow']};
+  }
     }
 `
 

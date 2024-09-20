@@ -5,8 +5,8 @@ export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0%.75rem 0 1rem 0;
-  margin-bottom: 92px;
+  padding: 0.5rem 0 1rem 0;
+  margin-bottom: 5.75rem
 `
 
 export const CartContainer = styled.div`
@@ -43,5 +43,21 @@ export const CartContainer = styled.div`
     height: 2.375rem;
     border: 2px solid ${props => props.theme['yellow-light']};
     border-radius: 0.375rem;
+    position: relative;
+
+    span {
+      font-weight: bold;
+      color: ${props => props.theme['white']};
+      background-color: ${props => props.theme['yellow-dark']};
+      border-radius: 50%;
+      width: 1.25rem;
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+    }
   }
 `

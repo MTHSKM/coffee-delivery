@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     :focus {
-        outline: 0;
+        outline: none;
         box-shadow: 0 0 0 2px ${props => props.theme['purple-700']};
     }
 
@@ -22,5 +22,17 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
         font-size: 1rem;
+        outline: none;
+    }
+
+    button {
+        outline: none;
+        box-shadow: none;
+        border: none;
+    }
+
+    button:focus {
+        outline: none;
+        box-shadow: none;
     }
 `

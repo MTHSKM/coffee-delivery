@@ -1,32 +1,51 @@
-import { createContext, ReactNode, useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
+import { createContext, ReactNode, useReducer } from "react"
+import { v4 as uuidv4 } from 'uuid'
 
 import expresso from '../assets/coffesImage/expresso.svg'
-import teste from '../assets/coffesImage/arabe.svg'
+import americano from '../assets/coffesImage/americano.svg'
+import cremoso from '../assets/coffesImage/expresso_cremoso.svg'
+import gelado from '../assets/coffesImage/cafe_gelado.svg'
+import comLeite from '../assets/coffesImage/cafe_com_leite.svg'
+import latte from '../assets/coffesImage/latte.svg'
+import capuccino from '../assets/coffesImage/capuccino.svg'
+import macchiato from '../assets/coffesImage/machiatto.svg'
+import mocaccino from '../assets/coffesImage/mochacinno.svg'
+import chocolateQuente from '../assets/coffesImage/chocolate_quente.svg'
+import cubano from '../assets/coffesImage/cubano.svg'
+import havaiano from '../assets/coffesImage/havaiano.svg'
+import arabe from '../assets/coffesImage/arabe.svg'
+import irlandes from '../assets/coffesImage/irlandes.svg'
+import { cafesReducer } from "../reducers/Cafes/reducer"
+import { setFilterAction } from "../reducers/Cafes/actions"
 
-export interface CoffeContextType {
-    id: string,
-    title: string,
-    description: string,
-    tags: string[],
-    price: number,
+export interface CoffeeContextType {
+    id: string
+    title: string
+    description: string
+    tags: string[]
+    price: number
     image: string
 }
 
-interface CoffeContextProps {
-    coffees: CoffeContextType[],
-    filteredCoffees: CoffeContextType[],
+export interface CoffeeState {
+    coffees: CoffeeContextType[]
+    filter: string
+}
+
+interface CoffeeContextProps {
+    coffees: CoffeeContextType[]
+    filteredCoffees: CoffeeContextType[]
     handleFilter: (filter: string) => void
 }
 
-export const CoffeContext = createContext<CoffeContextProps | null>(null)
+export const CoffeeContext = createContext<CoffeeContextProps | null>(null)
 
-interface CoffeContextProviderProps {
-    children : ReactNode
+interface CoffeeContextProviderProps {
+    children: ReactNode
 }
 
-export function CoffeContextProvider({children}: CoffeContextProviderProps) {
-    const [coffees] = useState<CoffeContextType[]>([
+const initialState: CoffeeState = {
+    coffees: [
         {
             id: uuidv4(),
             title: 'Expresso Tradicional',
@@ -37,123 +56,127 @@ export function CoffeContextProvider({children}: CoffeContextProviderProps) {
         },
         {
             id: uuidv4(),
-            title: 'Arabe',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Com Leite'],
+            title: 'Expresso Americano',
+            description: 'Expresso diluído, menos intenso que o tradicional',
+            tags: ['Tradicional'],
             price: 9.90,
-            image: teste
+            image: americano
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
+            title: 'Expresso Cremoso',
+            description: 'Café expresso tradicional com espuma cremosa',
             tags: ['Tradicional'],
             price: 9.90,
-            image: expresso
+            image: cremoso
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Expresso Gelado',
+            description: 'Bebida preparada com café expresso e cubos de gelo',
+            tags: ['Tradicional', 'Gelado'],
             price: 9.90,
-            image: expresso
+            image: gelado
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Café Com Leite',
+            description: 'Meio a meio de expresso tradicional com leite vaporizado',
+            tags: ['Tradicional', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: comLeite
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Latte',
+            description: 'Uma dose de café expresso com o dobro de leite e espuma cremosa',
+            tags: ['Tradicional', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: latte
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Capuccino',
+            description: 'Bebida com canela feita de doses iguais de café, leite e espuma',
+            tags: ['Tradicional', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: capuccino
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Macchiato',
+            description: 'Café expresso misturado com um pouco de leite quente e espuma',
+            tags: ['Tradicional', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: macchiato
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Mocaccino',
+            description: 'Café expresso com calda de chocolate, pouco leite e espuma',
+            tags: ['Tradicional', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: mocaccino
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Chocolate Quente',
+            description: 'Bebida feita com chocolate dissolvido no leite quente e café',
+            tags: ['Especial', 'Com Leite'],
             price: 9.90,
-            image: expresso
+            image: chocolateQuente
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Cubano',
+            description: 'Drink gelado de café expresso com rum, creme de leite e hortelã',
+            tags: ['Especial', 'Alcoólico', 'Gelado'],
             price: 9.90,
-            image: expresso
+            image: cubano
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Havaiano',
+            description: 'Bebida adocicada preparada com café e leite de coco',
+            tags: ['Especial'],
             price: 9.90,
-            image: expresso
+            image: havaiano
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Árabe',
+            description: 'Bebida preparada com grãos de café árabe e especiarias',
+            tags: ['Especial'],
             price: 9.90,
-            image: expresso
+            image: arabe
         },
         {
             id: uuidv4(),
-            title: 'Expresso Tradicional',
-            description: 'O tradicional café feito com água quente e grãos moídos',
-            tags: ['Tradicional'],
+            title: 'Irlandês',
+            description: 'Bebida a base de café, uísque irlandês, açúcar e chantilly',
+            tags: ['Especial', 'Alcoólico'],
             price: 9.90,
-            image: expresso
+            image: irlandes
         }
-    ])
+    ],
+    filter: ''
+}
 
-    const [filter, setFilter] = useState<string>('')
+
+export function CoffeeContextProvider({ children }: CoffeeContextProviderProps) {
+    const [state, dispatch] = useReducer(cafesReducer, initialState)
 
     function handleFilter(filter: string) {
-        setFilter(filter)
+        dispatch(setFilterAction(filter))
     }
 
-    const filteredCoffees = coffees.filter( coffee => 
-        filter === '' || coffee.tags.includes(filter)
+    const filteredCoffees = state.coffees.filter(coffee =>
+        state.filter === '' || coffee.tags.includes(state.filter)
     )
 
-    return(
-        <CoffeContext.Provider value={{coffees, filteredCoffees, handleFilter}}>
+    return (
+        <CoffeeContext.Provider value={{ coffees: state.coffees, filteredCoffees, handleFilter }}>
             {children}
-        </CoffeContext.Provider>
+        </CoffeeContext.Provider>
     )
 }

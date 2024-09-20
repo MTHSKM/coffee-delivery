@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { CardContainer, CardImageContainer, CardListContainer, OutOfCoffee, ProductDescriptionContainer, ProductMenuCartContainer, ProductNameContainer, ProductOrderContainer, ProductOrderInputContainer, ProductPriceContainer, TagContainer } from "./styles";
-import { CoffeContext, CoffeContextType } from "../../contexts/CafesContext";
-import { CartContext } from "../../contexts/CartContext";
+import { CoffeeContext, CoffeContextType } from "../../../../contexts/CafesContext";
+import { CartContext } from "../../../../contexts/CartContext";
 import { Minus, Plus, ShoppingCart } from "phosphor-react";
 
 export function Card() {
-    const contextCoffee = useContext(CoffeContext)
+    const contextCoffee = useContext(CoffeeContext)
     const contextCart = useContext(CartContext)
-    const [isItemAdded, setIsItemAdded] = useState(false)
+    const [isItemAdded, setIsItemAdded] = useState<{ [key: string]: boolean}>({})
+    const [coffeQuantity, setCoffeQuantity] = useState<{ [key: string]: number }>({})
 
     if (!contextCoffee || !contextCart) {
         return (
@@ -16,49 +17,58 @@ export function Card() {
     }
 
     const { filteredCoffees } = contextCoffee
-
     const { handleAddToCart } = contextCart
 
     function addToCart(coffee: CoffeContextType, quantity: number) {
         handleAddToCart(coffee, quantity)
-        setIsItemAdded(true)
+        setIsItemAdded((state) => ({...state, [coffee.id]: true}))
+        setCoffeQuantity((state) => ({ ...state, [coffee.id]: 1 }))
     }
-
-
-
+    
     useEffect(() => {
-        let timeout: number
-
-        if (isItemAdded) {
-            timeout = setTimeout(() => {
-                setIsItemAdded(false)
-            }, 1000)
-        }
+        let timeouts = Object.keys(isItemAdded).map(id => {
+            if (isItemAdded[id]) {
+                return window.setTimeout(() => {
+                    setIsItemAdded((state) => ({
+                        ...state,
+                        [id]: false
+                    }))
+                }, 1000)
+            }
+            
+            return null
+        })
 
         return () => {
-            if (timeout) {
-                clearTimeout(timeout)
-            }
+            timeouts.forEach(timeout => {
+                if (timeout !== null) {
+                    window.clearTimeout(timeout)
+                }
+            })
         }
     }, [isItemAdded])
 
+    function increaseQuantity(id: string) {
+        setCoffeQuantity((state) => ({
+            ...state,
+            [id]: (state[id] || 1) + 1
+        }))
+    }
+
+    function decreaseQuantity(id: string) {
+        setCoffeQuantity((state) => {
+            const newCoffeeQuantity = Math.max((state[id] || 1) -1 , 1)
+            return { ...state, [id]: newCoffeeQuantity}
+        })
+    }
+
     return (
-
-
         <CardListContainer>
             {filteredCoffees.length > 0 ? (
                 filteredCoffees.map(coffee => {
+                    const quantity = coffeQuantity[coffee.id] || 1
+                    const itemAdded = isItemAdded[coffee.id] || false;
 
-
-                    const [coffeQuantity, setCoffeQuantity] = useState(1)
-
-                    function increaseQuantity() {
-                        setCoffeQuantity(state => state + 1)
-                    }
-                
-                    function decreaseQuantity() {
-                        setCoffeQuantity(state => state - 1)
-                    }
                     return (
                         <CardContainer key={coffee.id}>
                             <CardImageContainer src={coffee.image} alt={coffee.title}></CardImageContainer>
@@ -79,18 +89,18 @@ export function Card() {
                                     <span>{coffee.price.toFixed(2)}</span>
                                 </ProductPriceContainer>
 
-                                <ProductOrderContainer $itemAdded={isItemAdded}>
+                                <ProductOrderContainer $itemAdded={itemAdded}>
                                     <ProductOrderInputContainer>
-                                        <button onClick={decreaseQuantity}>
+                                        <button onClick={() => decreaseQuantity(coffee.id)}>
                                             <Minus size={14} />
                                         </button>
-                                        <span>{coffeQuantity}</span>
-                                        <button onClick={increaseQuantity}>
+                                        <span>{quantity}</span>
+                                        <button onClick={() => increaseQuantity(coffee.id)}>
                                             <Plus size={14} />
                                         </button>
                                     </ProductOrderInputContainer>
 
-                                    <button disabled={isItemAdded} onClick={() => { addToCart(coffee, coffeQuantity); setCoffeQuantity(1) }}>
+                                    <button disabled={itemAdded} onClick={() => { addToCart(coffee, quantity) }}>
                                         {isItemAdded ? (
                                             <ShoppingCart
                                                 size={22}

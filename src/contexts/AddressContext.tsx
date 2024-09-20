@@ -21,12 +21,9 @@ const initialAddressState: AddressInfoProps[] = []
 export const AddressContext = createContext<AddressContextProps | null>(null)
 
 export function AddressContextProvider({ children }: AddressContextProviderProps) {
-    const [addressState, dispatch] = useReducer(addressReducer, initialAddressState, () => {
+    const [addressState, dispatch] = useReducer(addressReducer, initialAddressState, (initial) => {
         const storedStateAsJSON = localStorage.getItem('@coffee-delivery:address-state-1.0.0')
-
-        if(storedStateAsJSON) {
-            return JSON.parse(storedStateAsJSON)
-        }
+        return storedStateAsJSON ? JSON.parse(storedStateAsJSON) : initial
     })
 
     useEffect(() => {

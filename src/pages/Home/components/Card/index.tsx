@@ -26,7 +26,7 @@ export function Card() {
     }
     
     useEffect(() => {
-        let timeouts = Object.keys(isItemAdded).map(id => {
+        const timeouts = Object.keys(isItemAdded).map(id => {
             if (isItemAdded[id]) {
                 return window.setTimeout(() => {
                     setIsItemAdded((state) => ({

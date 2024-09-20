@@ -23,13 +23,11 @@ export const CartContext = createContext<CartContextType | null>(null)
 const initialState: CartItem[] = []
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-    const [cartState, dispatch] = useReducer(cartReducer, initialState, () => {
+    const [cartState, dispatch] = useReducer(cartReducer, initialState, (initial) => {
         const storedStateAsJSON = localStorage.getItem('@coffee-delivery:cart-state-1.0.0')
-
-        if(storedStateAsJSON) {
-            return JSON.parse(storedStateAsJSON)
-        }
+        return storedStateAsJSON ? JSON.parse(storedStateAsJSON) : initial
     })
+    
     
     useEffect(() => {
         const stateJSON = JSON.stringify(cartState)

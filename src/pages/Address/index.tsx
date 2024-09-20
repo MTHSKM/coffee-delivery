@@ -64,7 +64,7 @@ export function Address() {
         city: watch('city'),
         state: watch('state'),
         paymentMethod: watch('paymentMethod') as "credit" | "debit" | "cash" || "cash"
-    };
+    }
     
 
     const propTudoJuntoId = uuidv4()

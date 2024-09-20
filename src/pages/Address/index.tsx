@@ -5,13 +5,13 @@ import { AddressContainer, AddressForm, AddressHeading, CartTotalCoffeeContainer
 import { useContext, useState } from 'react'
 import { CartContext } from '../../contexts/CartContext'
 import { QuantityInput } from './components/QuantityInput'
-import { CoffeeContextType } from '../../contexts/CafesContext'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { TextInput } from './components/TextInput'
 import { NavLink } from 'react-router-dom'
 import { AddressContext } from '../../contexts/AddressContext'
 import { v4 as uuidv4 } from 'uuid'
+import { CoffeeContextType } from '../../contexts/CafesContext'
 
 const newAddressFormValidationSchema = zod.object({
     cep: zod.number({ invalid_type_error: 'Informe o CEP' }),
@@ -59,16 +59,17 @@ export function Address() {
         cep: watch('cep'),
         street: watch('street'),
         number: watch('number'),
+        fullAddress: watch('fullAddress'),
         neighborhood: watch('neighborhood'),
         city: watch('city'),
         state: watch('state'),
-        paymentMethod: watch('paymentMethod'),
-        fullAddress: watch('fullAddress')
-    }
+        paymentMethod: watch('paymentMethod') as "credit" | "debit" | "cash" || "cash"
+    };
+    
 
     const propTudoJuntoId = uuidv4()
 
-    const isSubmitDisabled = !selectedPaymentMethod || !propTudoJunto.cep || !propTudoJunto.street || !propTudoJunto.neighborhood || !propTudoJunto.city || !propTudoJunto.state || !propTudoJunto.number || cart.length === 0
+    const isSubmitDisabled = !propTudoJunto.paymentMethod || !propTudoJunto.cep || !propTudoJunto.street || !propTudoJunto.neighborhood || !propTudoJunto.city || !propTudoJunto.state || !propTudoJunto.number || cart.length === 0
     const disable = isSubmitDisabled ? true : false
 
     function addToCart(coffee: CoffeeContextType) {

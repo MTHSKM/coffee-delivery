@@ -16,22 +16,22 @@ export function Banner() {
 
                 <BannerIconsContainer>
                     <div>
-                        <IconWrapperContainer variant="orange">
+                        <IconWrapperContainer $variant="orange">
                             <ShoppingCart color="#FFFFFF" size={16} weight="fill"></ShoppingCart>
                             <span>Compra simples e segura</span>
                         </IconWrapperContainer>
-                        <IconWrapperContainer variant="yellow">
+                        <IconWrapperContainer $variant="yellow">
                             <Timer color="#FFFFFF" size={16} weight="fill"></Timer>
                             <span>Entrega rápida e rastreada</span>
                         </IconWrapperContainer>
                     </div>
 
                     <div>
-                        <IconWrapperContainer variant="black">
+                        <IconWrapperContainer $variant="black">
                             <Package color="#FFFFFF" size={16} weight="fill"></Package>
                             <span>Embalagem mantém o café intacto</span>
                         </IconWrapperContainer>
-                        <IconWrapperContainer variant="purple">
+                        <IconWrapperContainer $variant="purple">
                             <Coffee color="#FFFFFF" size={16} weight="fill"></Coffee>
                             <span>O café chega fresquinho até você</span>
                         </IconWrapperContainer>

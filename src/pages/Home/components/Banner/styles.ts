@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 type IconBackgroundVariant = 'orange' | 'yellow' | 'black' | 'purple'
 
 interface IconContainerProps {
-    variant: IconBackgroundVariant
+    $variant: IconBackgroundVariant
 }
 
 const iconVariant = {
@@ -69,7 +69,7 @@ export const IconWrapperContainer = styled.div<IconContainerProps>`
     svg {
         ${props => {
             return css`
-            background-color: ${props.theme[iconVariant[props.variant]]};
+            background-color: ${props.theme[iconVariant[props.$variant]]};
             `
         }}
         padding: 0.5rem;

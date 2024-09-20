@@ -1,16 +1,16 @@
-import { Bank, CreditCard, CurrencyDollar, MapPin, Money, Trash } from "phosphor-react"
-import { Fragment } from "react/jsx-runtime"
+import { Bank, CreditCard, CurrencyDollar, MapPin, Money, Trash } from 'phosphor-react'
+import { Fragment } from 'react/jsx-runtime'
 import { useForm } from 'react-hook-form'
-import { AddressContainer, AddressForm, AddressHeading, CartTotalCoffeeContainer, CartTotal, InfoContainer, MainAddressContainer, PaymentContainer, PaymentHeading, PaymentOptions, CartTotalCoffeeInfoContainer, CartTotalInfoContainer, CheckoutButtonContainer, LabelRadioContainer, LabelInputContainer, TrashButtonContainer } from "./styles"
-import { useContext, useState } from "react"
-import { CartContext } from "../../contexts/CartContext"
-import { QuantityInput } from "./components/QuantityInput"
-import { CoffeContextType } from "../../contexts/CafesContext"
+import { AddressContainer, AddressForm, AddressHeading, CartTotalCoffeeContainer, CartTotal, InfoContainer, MainAddressContainer, PaymentContainer, PaymentHeading, PaymentOptions, CartTotalCoffeeInfoContainer, CartTotalInfoContainer, CheckoutButtonContainer, LabelRadioContainer, LabelInputContainer, TrashButtonContainer } from './styles'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../contexts/CartContext'
+import { QuantityInput } from './components/QuantityInput'
+import { CoffeeContextType } from '../../contexts/CafesContext'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { TextInput } from "./components/TextInput"
-import { NavLink } from "react-router-dom"
-import { AddressContext } from "../../contexts/AddressContext"
+import { TextInput } from './components/TextInput'
+import { NavLink } from 'react-router-dom'
+import { AddressContext } from '../../contexts/AddressContext'
 import { v4 as uuidv4 } from 'uuid'
 
 const newAddressFormValidationSchema = zod.object({
@@ -55,8 +55,6 @@ export function Address() {
         mode: 'all'
     })
 
-    // const selectedPaymentMethod = watch('paymentMethod')
-
     const propTudoJunto = {
         cep: watch('cep'),
         street: watch('street'),
@@ -64,7 +62,7 @@ export function Address() {
         neighborhood: watch('neighborhood'),
         city: watch('city'),
         state: watch('state'),
-        paymentMethod: selectedPaymentMethod,
+        paymentMethod: watch('paymentMethod'),
         fullAddress: watch('fullAddress')
     }
 
@@ -73,15 +71,15 @@ export function Address() {
     const isSubmitDisabled = !selectedPaymentMethod || !propTudoJunto.cep || !propTudoJunto.street || !propTudoJunto.neighborhood || !propTudoJunto.city || !propTudoJunto.state || !propTudoJunto.number || cart.length === 0
     const disable = isSubmitDisabled ? true : false
 
-    function addToCart(coffee: CoffeContextType) {
+    function addToCart(coffee: CoffeeContextType) {
         handleAddToCart(coffee, 1)
     }
 
-    function removeFromCart(coffee: CoffeContextType) {
+    function removeFromCart(coffee: CoffeeContextType) {
         handleAddToCart(coffee, -1)
     }
 
-    function deleteFromCart(coffee: CoffeContextType) {
+    function deleteFromCart(coffee: CoffeeContextType) {
         handleRemoveFromCart(coffee.id)
     }
 
@@ -90,7 +88,7 @@ export function Address() {
             <InfoContainer>
                 <h2>Complete seu pedido</h2>
 
-                <form id="address">
+                <form id='address'>
                     <AddressContainer>
                         <AddressHeading>
                             <MapPin size={22}></MapPin>
@@ -102,30 +100,30 @@ export function Address() {
 
                         <AddressForm>
                             <TextInput
-                                placeholder="CEP"
-                                type="number"
+                                placeholder='CEP'
+                                type='number'
                                 containerProps={{ style: { gridArea: 'cep' } }}
                                 error={errors.cep}
                                 {...register('cep', { valueAsNumber: true })}
                             ></TextInput>
 
                             <TextInput
-                                placeholder="Rua"
+                                placeholder='Rua'
                                 containerProps={{ style: { gridArea: 'street' } }}
                                 error={errors.street}
                                 {...register('street')}
                             />
 
                             <TextInput
-                                placeholder="Número"
-                                type="number"
+                                placeholder='Número'
+                                type='number'
                                 containerProps={{ style: { gridArea: 'number' } }}
                                 error={errors.number}
                                 {...register('number', { valueAsNumber: true })}
                             />
 
                             <TextInput
-                                placeholder="Complemento"
+                                placeholder='Complemento'
                                 optional
                                 containerProps={{ style: { gridArea: 'fullAddress' } }}
                                 error={errors.fullAddress}
@@ -133,21 +131,21 @@ export function Address() {
                             />
 
                             <TextInput
-                                placeholder="Bairro"
+                                placeholder='Bairro'
                                 containerProps={{ style: { gridArea: 'neighborhood' } }}
                                 error={errors.neighborhood}
                                 {...register('neighborhood')}
                             />
 
                             <TextInput
-                                placeholder="Cidade"
+                                placeholder='Cidade'
                                 containerProps={{ style: { gridArea: 'city' } }}
                                 error={errors.city}
                                 {...register('city')}
                             />
 
                             <TextInput
-                                placeholder="UF"
+                                placeholder='UF'
                                 maxLength={2}
                                 containerProps={{ style: { gridArea: 'state' } }}
                                 error={errors.state}
@@ -170,9 +168,9 @@ export function Address() {
                             <div>
                                 <LabelRadioContainer data-state={selectedPaymentMethod === 'credit' ? 'true' : 'false'}>
                                     <LabelInputContainer
-                                        type="radio"
+                                        type='radio'
                                         {...register('paymentMethod')}
-                                        value="credit"
+                                        value='credit'
                                         onChange={() => { setSelectedPaymentMethod('credit')}}
                                     ></LabelInputContainer>
                                     <CreditCard></CreditCard>
@@ -181,9 +179,9 @@ export function Address() {
 
                                 <LabelRadioContainer data-state={selectedPaymentMethod === 'debit' ? 'true' : 'false'}>
                                     <LabelInputContainer
-                                        type="radio"
+                                        type='radio'
                                         {...register('paymentMethod')}
-                                        value="debit"
+                                        value='debit'
                                         onChange={() => { setSelectedPaymentMethod('debit')}}
                                     ></LabelInputContainer>
                                     <Bank></Bank>
@@ -192,9 +190,9 @@ export function Address() {
 
                                 <LabelRadioContainer data-state={selectedPaymentMethod === 'cash' ? 'true' : 'false'}>
                                     <LabelInputContainer
-                                        type="radio"
+                                        type='radio'
                                         {...register('paymentMethod')}
-                                        value="cash"
+                                        value='cash'
                                         onChange={() => { setSelectedPaymentMethod('cash')}}
                                     ></LabelInputContainer>
                                     <Money></Money>
@@ -283,8 +281,8 @@ export function Address() {
 
 
                     <nav>
-                        <NavLink to={`/order/${propTudoJuntoId}`} title="order">
-                            <CheckoutButtonContainer type="submit" form="address" disabled={disable} onClick={() => {handleAddNewAddress(propTudoJunto, propTudoJuntoId); handleClearCart()}}>
+                        <NavLink to={`/order/${propTudoJuntoId}`} title='order'>
+                            <CheckoutButtonContainer type='submit' form='address' disabled={disable} onClick={() => {handleAddNewAddress(propTudoJunto, propTudoJuntoId); handleClearCart()}}>
                                 Confirmar Pedido
                             </CheckoutButtonContainer>
                         </NavLink>

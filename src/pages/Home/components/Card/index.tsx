@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CardContainer, CardImageContainer, CardListContainer, OutOfCoffee, ProductDescriptionContainer, ProductMenuCartContainer, ProductNameContainer, ProductOrderContainer, ProductOrderInputContainer, ProductPriceContainer, TagContainer } from "./styles";
-import { CoffeeContext, CoffeContextType } from "../../../../contexts/CafesContext";
+import { CoffeeContext, CoffeeContextType } from "../../../../contexts/CafesContext";
 import { CartContext } from "../../../../contexts/CartContext";
 import { Minus, Plus, ShoppingCart } from "phosphor-react";
 
@@ -19,7 +19,7 @@ export function Card() {
     const { filteredCoffees } = contextCoffee
     const { handleAddToCart } = contextCart
 
-    function addToCart(coffee: CoffeContextType, quantity: number) {
+    function addToCart(coffee: CoffeeContextType, quantity: number) {
         handleAddToCart(coffee, quantity)
         setIsItemAdded((state) => ({...state, [coffee.id]: true}))
         setCoffeQuantity((state) => ({ ...state, [coffee.id]: 1 }))

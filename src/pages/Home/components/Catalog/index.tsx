@@ -13,7 +13,7 @@ export function Catalog() {
         )
     }
 
-    const { handleFilter, filteredCoffees } = context
+    const { handleFilter } = context
 
     function handleFilterCatalog(filter: string) {
         handleFilter(filter)

@@ -69,7 +69,7 @@ export function Address() {
 
     const propTudoJuntoId = uuidv4()
 
-    const isSubmitDisabled = !propTudoJunto.paymentMethod || !propTudoJunto.cep || !propTudoJunto.street || !propTudoJunto.neighborhood || !propTudoJunto.city || !propTudoJunto.state || !propTudoJunto.number || cart.length === 0
+    const isSubmitDisabled = !selectedPaymentMethod || !propTudoJunto.cep || !propTudoJunto.street || !propTudoJunto.neighborhood || !propTudoJunto.city || !propTudoJunto.state || !propTudoJunto.number || cart.length === 0
     const disable = isSubmitDisabled ? true : false
 
     function addToCart(coffee: CoffeeContextType) {
